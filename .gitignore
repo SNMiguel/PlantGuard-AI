@@ -1,0 +1,95 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# PyTorch Model Files (too large for git)
+*.pth
+*.pt
+*.ckpt
+models/saved/*.pth
+models/saved/*.pt
+*.onnx
+
+# Dataset (too large - users should download separately)
+data/raw/
+data/processed/*.jpg
+data/processed/*.png
+data/processed/*.jpeg
+*.zip
+*.tar.gz
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Results (can regenerate)
+results/predictions/*.jpg
+results/predictions/*.png
+results/visualizations/*.png
+results/visualizations/*.pdf
+
+# Logs
+*.log
+logs/
+wandb/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+
+# TensorBoard
+runs/
+events.out.tfevents.*
+
+# Temporary files
+*.tmp
+temp/
+tmp/
