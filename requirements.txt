@@ -1,0 +1,11 @@
+torch==2.1.0
+torchvision==0.16.0
+Pillow==10.1.0
+numpy==1.26.4
+pandas==2.2.0
+matplotlib==3.8.2
+seaborn==0.13.1
+scikit-learn==1.4.0
+tqdm==4.66.1
+opencv-python==4.8.1.78
+gradio==4.7.1
