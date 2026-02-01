@@ -196,7 +196,7 @@ if __name__ == "__main__":
     # This will fail if dataset doesn't exist yet - that's expected
     try:
         dataset = PlantDiseaseDataset(
-            data_dir="data/raw",
+            data_dir="data/raw/plantvillage dataset/color",
             train_transform=None,
             val_transform=None
         )
@@ -208,3 +208,4 @@ if __name__ == "__main__":
     except FileNotFoundError as e:
         print(f"\n⚠ Dataset not found (expected): {e}")
         print("✓ Data loader module is ready - download dataset to test fully!")
+        
