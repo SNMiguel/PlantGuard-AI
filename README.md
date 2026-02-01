@@ -126,13 +126,19 @@ The model classifies **38 disease classes** across **14 crop species**:
 ## 📈 Results
 
 ### Training Curves
-*Training and validation loss/accuracy over 10 epochs*
+<p align="center">
+  <img src="https://i.imgur.com/TMZJV6n.png" alt="Training Curves" width="600"/>
+</p>
 
 ### Confusion Matrix
-*38x38 heatmap showing per-class predictions*
+<p align="center">
+  <img src="https://i.imgur.com/cxdvq5c.png" alt="Confusion Matrix" width="600"/>
+</p>
 
 ### Sample Predictions
-*Visual examples of correct and incorrect classifications*
+<p align="center">
+  <img src="https://i.imgur.com/IQ7osiN.png" alt="Sample Predictions" width="600"/>
+</p>
 
 (Check `results/visualizations/` for generated plots)
 
