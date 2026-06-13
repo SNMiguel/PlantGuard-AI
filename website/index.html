@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlantGuard-AI — Reasoning Agent for Plant Disease Diagnosis</title>
+  <meta name="description" content="PlantGuard-AI diagnoses 38 crop diseases from a single leaf photo and reasons through severity, treatment, and economic impact — grounded by Microsoft Foundry IQ." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <header class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="#hero" class="nav__brand">
+        <span class="nav__leaf">🌿</span> PlantGuard<span class="nav__ai">AI</span>
+      </a>
+      <nav class="nav__links">
+        <a href="#how">How it works</a>
+        <a href="#demo">Demo</a>
+        <a href="#features">Features</a>
+        <a href="#" class="nav__cta" id="navCta">Try the demo</a>
+      </nav>
+      <button class="nav__burger" id="burger" aria-label="Menu">☰</button>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="hero">
+    <div class="hero__bg"></div>
+    <div class="hero__overlay"></div>
+    <div class="hero__inner">
+      <div class="hero__copy">
+        <span class="pill">Microsoft Agents League · Reasoning Agents</span>
+        <h1>Diagnose any crop disease<br />from a single leaf photo.</h1>
+        <p class="hero__sub">
+          PlantGuard-AI pairs a 95%-accurate vision model with a reasoning agent
+          that thinks through <strong>severity, treatment, and economic impact</strong> —
+          every answer grounded and cited by Microsoft Foundry IQ.
+        </p>
+        <div class="hero__actions">
+          <a href="#demo" class="btn btn--primary">See it in action</a>
+          <a href="#how" class="btn btn--ghost">How it works</a>
+        </div>
+        <div class="hero__stats">
+          <div class="stat"><span class="stat__num" data-count="95.02" data-suffix="%">0</span><span class="stat__label">Test accuracy</span></div>
+          <div class="stat"><span class="stat__num" data-count="38" data-suffix="">0</span><span class="stat__label">Disease classes</span></div>
+          <div class="stat"><span class="stat__num" data-count="14" data-suffix="">0</span><span class="stat__label">Crop species</span></div>
+        </div>
+      </div>
+      <div class="hero__art">
+        <img src="assets/images/hero-banner.png" alt="PlantGuard-AI scanning a crop leaf" class="hero__banner" />
+        <div class="hero__chip hero__chip--top">
+          <span class="dot dot--green"></span> Tomato · Late blight · 99.8%
+        </div>
+        <div class="hero__chip hero__chip--bottom">
+          🧠 Agent: severe — act immediately
+        </div>
+      </div>
+    </div>
+    <div class="hero__brands">
+      <span>Powered by</span> PyTorch · ResNet18 · Azure AI Foundry · Foundry IQ
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="section" id="how">
+    <div class="section__head">
+      <span class="eyebrow">How it works</span>
+      <h2>From photo to action plan in seconds</h2>
+      <p>One image triggers a full pipeline: detect, reason, and ground the answer in trusted agronomy.</p>
+    </div>
+
+    <div class="how">
+      <div class="how__steps">
+        <div class="step">
+          <div class="step__num">1</div>
+          <div>
+            <h3>Snap &amp; upload a leaf</h3>
+            <p>A farmer photographs an affected leaf and uploads it — no app install, works on any phone browser.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step__num">2</div>
+          <div>
+            <h3>Vision model detects the disease</h3>
+            <p>A ResNet18 transfer-learning model classifies the leaf across 38 disease classes with calibrated confidence.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step__num">3</div>
+          <div>
+            <h3>Agent reasons &amp; grounds the answer</h3>
+            <p>The reasoning agent works through severity, treatment, and economic impact — citing Foundry IQ knowledge sources.</p>
+          </div>
+        </div>
+      </div>
+      <div class="how__visual">
+        <img src="assets/images/ai-scan.png" alt="AI scanning and analyzing a leaf for disease" />
+        <div class="how__scanline"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DEMO ===== -->
+  <section class="section section--tint" id="demo">
+    <div class="section__head">
+      <span class="eyebrow">Live demo</span>
+      <h2>The reasoning agent in action</h2>
+      <p>Upload a leaf in the Gradio app and watch the agent build a grounded, multi-step diagnosis.</p>
+    </div>
+
+    <div class="demo">
+      <!-- Upload panel placeholder -->
+      <div class="demo__panel">
+        <div class="demo__placeholder" role="img" aria-label="Leaf upload preview">
+          <div class="demo__ph-inner">
+            <span class="demo__ph-icon">🍃</span>
+            <strong>Drop a crop leaf image</strong>
+            <span class="demo__ph-sub">JPG / PNG · single leaf, good light</span>
+          </div>
+        </div>
+        <button class="btn btn--primary btn--full" id="demoRun">🔍 Diagnose</button>
+      </div>
+
+      <!-- Agent output (real sample) -->
+      <div class="demo__output" id="demoOutput">
+        <div class="result-card">
+          <div class="result-card__top">
+            <div>
+              <span class="muted-label">Crop</span>
+              <div class="result-card__crop">Tomato</div>
+            </div>
+            <span class="badge badge--severe">Severity: SEVERE</span>
+          </div>
+          <div class="result-card__status"><span class="status-dot"></span> Disease detected — <strong>Late blight</strong></div>
+          <div class="meter"><div class="meter__fill" style="width:99.8%"></div></div>
+          <div class="muted-small">Model confidence: <strong>99.79%</strong></div>
+        </div>
+
+        <div class="agent">
+          <div class="agent__head">
+            <h4>🧠 Agent reasoning</h4>
+            <span class="muted-small">grounded by Foundry IQ</span>
+          </div>
+          <div class="agent__step"><h5>🔬 Diagnosis</h5><p>Detected Late blight on Tomato with high confidence (99.8%). Likely cause: <em>Phytophthora infestans</em>, which produces fast-spreading water-soaked lesions.</p></div>
+          <div class="agent__step"><h5>📊 Severity</h5><p>SEVERE. Acts within days in cool, wet weather — immediate intervention required to avoid total crop loss.</p></div>
+          <div class="agent__step"><h5>💊 Treatment</h5><p>Destroy infected plants, apply protectant fungicide preventively, switch to systemic products when weather favors disease, avoid overhead irrigation.</p></div>
+          <div class="agent__step"><h5>📉 Economic impact</h5><p>One of the most destructive tomato diseases — an untreated outbreak can wipe out a field in under a week.</p></div>
+          <div class="agent__cites">
+            <span class="muted-label">Sources</span>
+            <a href="https://www.apsnet.org/edcenter/disandpath/" target="_blank">APS Plant Pathology</a>
+            <a href="https://www.vegetables.cornell.edu/" target="_blank">Cornell Plant Pathology</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="demo__note">↑ Real output from the bundled <code>app.py</code>. Run <code>python app.py</code> to try your own images.</p>
+  </section>
+
+  <!-- ===== FEATURES ===== -->
+  <section class="section" id="features">
+    <div class="section__head">
+      <span class="eyebrow">Why PlantGuard</span>
+      <h2>A vision model and a reasoning agent, together</h2>
+      <p>Detection is only step one. PlantGuard reasons about what the diagnosis <em>means</em> for the farm.</p>
+    </div>
+
+    <div class="features">
+      <article class="feature">
+        <div class="feature__icon">🔬</div>
+        <h3>95% accurate vision model</h3>
+        <p>ResNet18 transfer learning over PlantVillage — 38 disease classes across 14 crop species.</p>
+      </article>
+      <article class="feature">
+        <div class="feature__icon">🧠</div>
+        <h3>Multi-step reasoning agent</h3>
+        <p>Chains diagnosis → severity → treatment → economic impact, the way an agronomist would.</p>
+      </article>
+      <article class="feature">
+        <div class="feature__icon">📚</div>
+        <h3>Grounded by Foundry IQ</h3>
+        <p>Microsoft Foundry IQ grounds every answer in authoritative agricultural knowledge with citations.</p>
+      </article>
+      <article class="feature">
+        <div class="feature__icon">⚡</div>
+        <h3>Confidence-aware</h3>
+        <p>Low-confidence calls are de-escalated and flagged for expert confirmation — no false alarms.</p>
+      </article>
+      <article class="feature">
+        <div class="feature__icon">🌍</div>
+        <h3>Built for the field</h3>
+        <p>Runs in any browser via Gradio, and stays fully demoable offline when connectivity drops.</p>
+      </article>
+      <article class="feature">
+        <div class="feature__icon">💸</div>
+        <h3>Economic context</h3>
+        <p>Every diagnosis includes the potential crop and economic impact, so farmers can prioritize action.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== CTA BANNER ===== -->
+  <section class="cta">
+    <div class="cta__inner">
+      <h2>Protect the harvest before disease spreads.</h2>
+      <p>Detect, reason, and act — all from a single leaf photo.</p>
+      <a href="#demo" class="btn btn--light">Launch the demo</a>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <div class="nav__brand"><span class="nav__leaf">🌿</span> PlantGuard<span class="nav__ai">AI</span></div>
+        <p>AI-powered plant disease detection &amp; agronomic reasoning. Built for the Microsoft Agents League — Reasoning Agents track.</p>
+      </div>
+      <div class="footer__cols">
+        <div>
+          <h4>Product</h4>
+          <a href="#how">How it works</a>
+          <a href="#demo">Demo</a>
+          <a href="#features">Features</a>
+        </div>
+        <div>
+          <h4>Stack</h4>
+          <a href="#">PyTorch · ResNet18</a>
+          <a href="#">Azure AI Foundry</a>
+          <a href="#">Foundry IQ grounding</a>
+        </div>
+        <div>
+          <h4>Stats</h4>
+          <a href="#">95.02% accuracy</a>
+          <a href="#">38 disease classes</a>
+          <a href="#">14 crop species</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bar">
+      <span>© 2026 PlantGuard-AI</span>
+      <span>Microsoft Agents League · Reasoning Agents Track</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
