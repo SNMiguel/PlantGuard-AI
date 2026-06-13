@@ -78,17 +78,20 @@ A second pipeline turns a single leaf image into a grounded, multi-step action p
 
 ```
 leaf image → PlantDoctor (predict.py) → ReasoningAgent (agent.py) → AgentReport
-              ResNet18 + checkpoint        4-step reasoning            (UI / dict)
-              38-class label + conf         grounded by ↓
-                                          FoundryIQ (foundry.py)
-                                        cited agronomy knowledge
+              ResNet18 + checkpoint     Step 1: differential dx        (UI / dict)
+              top-k label + conf        Step 2: 4-section action plan
+                                        grounded by ↓     + economics.py ($ at risk)
+                                      FoundryIQ (foundry.py)
+                                  Azure AI Search agentic retrieval / cited KB
 ```
 
-- `PlantDoctor` (`predict.py`) — loads `models/saved/resnet18_best.pth` via `ResNetClassifier` and classifies a path/PIL/array into one of 38 classes. `CLASS_NAMES` is hardcoded (matches `ImageFolder`'s alphabetical sort) so inference needs no dataset on disk. `get_doctor()` caches a singleton; CLI: `python predict.py leaf.jpg`.
-- `ReasoningAgent` (`agent.py`) — takes the classifier label + confidence and reasons through **diagnosis → severity → treatment → economic impact**. Calls an Azure AI Foundry / OpenAI-compatible chat endpoint when configured, else composes the report from the grounded knowledge base (always demoable). Confidence modulates severity.
-- `FoundryIQ` (`foundry.py`) — the Microsoft IQ grounding layer. Queries a live Foundry IQ retrieval endpoint when configured, else grounds answers against a curated, citation-backed agronomy KB (UC IPM, Cornell, PennState, CABI, FAO, APS). Returns passages + citations.
-- `app.py` — Gradio UI (`gradio==4.7.1`): upload a leaf → diagnosis card (crop, condition, confidence, severity badge) + the agent's 4 reasoning steps + grounded sources.
+- `PlantDoctor` (`predict.py`) — loads `models/saved/resnet18_best.pth` via `ResNetClassifier` and classifies a path/PIL/array into one of 38 classes, returning the top-k. `CLASS_NAMES` is hardcoded (matches `ImageFolder`'s alphabetical sort) so inference needs no dataset on disk. `get_doctor()` caches a singleton; CLI: `python predict.py leaf.jpg`.
+- `ReasoningAgent` (`agent.py`) — `run(label, confidence, top_k=..., ...)`. **Step 1 (differential diagnosis):** when given `top_k` for a diseased leaf, it issues a *separate Foundry IQ retrieval per candidate*, weighs distinguishing symptoms, and produces a verdict + "what to check" (LLM adjudication, heuristic fallback). **Step 2:** the 4-section action plan (diagnosis → severity → treatment → economic impact). The two steps run concurrently (`ThreadPoolExecutor`) to cut latency. Confidence modulates severity. `AgentReport.differential` holds the trace.
+- `FoundryIQ` (`foundry.py`) — the Microsoft IQ grounding layer. Live mode calls the **Azure AI Search agentic-retrieval `retrieve` action** (`POST /knowledgebases/{kb}/retrieve`); otherwise grounds against a curated, citation-backed agronomy KB (UC IPM, Cornell, PennState, CABI, FAO, APS). `--selftest-live` validates the live wiring.
+- `economics.py` — deterministic (non-LLM) `$ at risk` estimator from crop + severity + acreage; clearly labeled an estimate. Used by the app's economic-exposure card.
+- `app.py` — Gradio UI (`gradio==4.7.1`): upload a leaf + field size → diagnosis card, economic-exposure card, the differential panel, the 4 reasoning steps, and grounded sources.
 - `config.py` — resolves LLM / Foundry IQ settings from env vars (or an optional `.env`; see `.env.example`). Nothing is required — absent credentials trigger the offline fallbacks.
+- `tools/export_kb.py` exports the agronomy KB to upload-ready Markdown; `tools/setup_foundry_iq.py` provisions the Azure AI Search index + knowledge base from a blob container.
 
 **Marketing site:** `website/` — single-page static site (`index.html` + `styles.css` + `script.js`, no build step). Forest-green palette; references `website/assets/images/{hero-banner,hero-background,ai-scan}.png`. Open `website/index.html` directly in a browser.
 

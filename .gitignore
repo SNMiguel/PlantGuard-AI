@@ -85,6 +85,12 @@ Thumbs.db
 .env
 .env.local
 
+# Credentials (never commit)
+.kaggle/
+kaggle.json
+*.pem
+*.key
+
 # TensorBoard
 runs/
 events.out.tfevents.*

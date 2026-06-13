@@ -1,193 +1,138 @@
-# PlantGuard-AI
+# 🌿 PlantGuard-AI
 
-Deep learning plant disease detection system using PyTorch and transfer learning. Classifies 38 crop diseases across 14 plant species with 95% accuracy on the PlantVillage dataset.
+**A reasoning agent that turns a single crop-leaf photo into a grounded, cited action plan — diagnosis, differential reasoning, treatment, and economic impact.**
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.1.0-orange)
-![Accuracy](https://img.shields.io/badge/Accuracy-95.02%25-brightgreen)
+![Accuracy](https://img.shields.io/badge/Vision_Accuracy-95.02%25-brightgreen)
+![Foundry IQ](https://img.shields.io/badge/Microsoft-Foundry_IQ-0078D4)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-## 🎯 Project Overview
+> **Microsoft Agents League — Reasoning Agents track.** Integrates **Microsoft Foundry IQ** (the required Microsoft IQ intelligence layer) for agentic, cited knowledge retrieval.
 
-PlantGuard-AI is a computer vision system that helps farmers and agricultural professionals identify plant diseases from leaf images. Using PyTorch and ResNet18 transfer learning, the model achieves **95.02% test accuracy** on 8,147 images across 38 disease classes.
+---
 
-**Key Features:**
-- **Transfer Learning** with ResNet18 (ImageNet pre-trained weights)
-- **Custom Data Augmentation** pipeline for robust predictions
-- **Production-Ready** training loop with checkpointing and learning rate scheduling
-- **Comprehensive Evaluation** with confusion matrices and per-class metrics
-- **Automated Visualizations** for model performance analysis
+## 🎯 What it is
 
-## 📊 Model Performance
+A diagnosis alone doesn't tell a farmer what to *do*. PlantGuard-AI pairs a **95%-accurate vision model** with a **multi-step reasoning agent** that:
 
-- **Test Accuracy**: 95.02%
-- **Precision**: 95.75%
-- **Recall**: 95.02%
-- **F1-Score**: 95.01%
-- **Training Time**: ~2 hours (10 epochs on CPU)
-- **Dataset Size**: 54,305 images across 38 classes
+1. **Detects** the disease from a leaf photo (ResNet18, 38 classes / 14 crops).
+2. **Reasons through a differential diagnosis** when the call is ambiguous — running *separate Foundry IQ retrievals per candidate*, weighing distinguishing symptoms, and telling the farmer what to physically inspect to confirm.
+3. **Grounds every recommendation** in cited agricultural knowledge via **Microsoft Foundry IQ** (Azure AI Search agentic retrieval) — reducing hallucination.
+4. **Quantifies the stakes** with a deterministic economic-exposure estimate (`$ at risk` for a given field size).
 
-## 🚀 Quick Start
+It degrades gracefully: with no cloud credentials it falls back to a curated, citation-backed knowledge base and offline reasoning, so the demo **always runs**.
 
-### Installation
+## 🧠 How it works
+
+```
+ leaf image
+     │
+     ▼
+ PlantDoctor (predict.py)          ResNet18 + checkpoint → top-k disease classes
+     │
+     ▼
+ ReasoningAgent (agent.py) ──────────────────────────────────────────────┐
+     │  Step 1  Differential diagnosis  (parallel, multi-retrieval)        │
+     │          • separate Foundry IQ retrieval per candidate              │
+     │          • weigh distinguishing symptoms → verdict + what to check  │
+     │  Step 2  Action plan: diagnosis · severity · treatment · economics  │
+     │          • grounded + cited                                         │
+     ▼                                                                     │
+ FoundryIQ (foundry.py)  ◄───── live: Azure AI Search agentic retrieval ──┘
+     │                          fallback: curated cited agronomy KB
+     ▼
+ economics.py → "$X–$Y at risk if untreated"  (deterministic estimate)
+     │
+     ▼
+ Gradio app (app.py)  /  marketing site (website/)
+```
+
+## ✨ Key features
+
+- **Vision model** — ResNet18 transfer learning, **95.02% test accuracy** over 38 PlantVillage classes.
+- **Differential-diagnosis reasoning loop** — genuine multi-step, tool-using reasoning that adjudicates competing diagnoses with grounded evidence (runs the retrievals in parallel for ~6s latency).
+- **Microsoft Foundry IQ grounding** — answers are retrieved and cited from an Azure AI Search knowledge base built from the project's agronomy docs.
+- **Economic exposure calculator** — a transparent, code-computed `$ at risk` estimate (not LLM-guessed), labeled as an estimate.
+- **Confidence-aware & safe** — low-confidence calls are de-escalated and flagged; healthy leaves produce no false alarms; every claim carries a citation and an "consult your extension service" disclaimer.
+- **Always demoable** — automatic offline fallback for both reasoning and grounding.
+
+## 🚀 Quick start
+
 ```bash
-# Clone the repository
-git clone https://github.com/SNMiguel/PlantGuard-AI.git
-cd PlantGuard-AI
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
 pip install -r requirements.txt
 ```
 
-### Download Dataset
+**Model checkpoint** — the trained ResNet18 weights (`resnet18_best.pth`, ~129 MB) are too large for a normal Git repo, so they're distributed separately. Get them one of two ways:
+- Download from the repo's [Releases](https://github.com/SNMiguel/PlantGuard-AI/releases) and place at `models/saved/resnet18_best.pth`, **or**
+- Retrain: `python main.py --data_dir data/raw --epochs 10` (needs the [PlantVillage dataset](https://www.kaggle.com/datasets/abdallahalidev/plantvillage-dataset)).
 
-1. Download PlantVillage dataset from [Kaggle](https://www.kaggle.com/datasets/abdallahalidev/plantvillage-dataset)
-2. Extract to `data/raw/` (should contain 38 disease class folders)
-
-### Train the Model
 ```bash
-# Quick training (5 epochs)
-python main.py --data_dir data/raw --epochs 5 --batch_size 32
+# Single-image diagnosis (CLI)
+python predict.py demo_images/1_tomato_late_blight.jpg
 
-# Full training (10 epochs, recommended)
-python main.py --data_dir data/raw --epochs 10 --batch_size 32 --verbose
-
-# Advanced training with frozen backbone
-python main.py --data_dir data/raw --epochs 15 --freeze_backbone
+# Launch the full demo app (upload a leaf → diagnosis + agent reasoning)
+python app.py            # → http://127.0.0.1:7860
 ```
 
-### Make Predictions
+### Optional: enable live LLM reasoning + Foundry IQ
+Copy `.env.example` to `.env` and fill in credentials (see the file for options — GitHub Models / Azure OpenAI for reasoning, Azure AI Search for Foundry IQ). Everything works *without* these via offline fallbacks.
+
 ```bash
-# Predict on a single image
-python predict.py --image_path path/to/leaf_image.jpg --model_path models/saved/resnet18_best.pth
+python foundry.py --selftest-live      # validate the live Foundry IQ wiring
 ```
 
-## 📁 Project Structure
+To provision your own Foundry IQ knowledge base from the bundled agronomy docs, see `tools/export_kb.py` and `tools/setup_foundry_iq.py`.
+
+## 📁 Project structure
+
 ```
 PlantGuard-AI/
-├── data/
-│   └── raw/                     # PlantVillage dataset (38 disease folders)
+├── predict.py            # Vision inference (ResNet18 checkpoint) → top-k classes
+├── agent.py              # Multi-step reasoning agent (differential + action plan)
+├── foundry.py            # Microsoft Foundry IQ grounding (live + offline fallback)
+├── economics.py          # Deterministic economic-exposure estimator
+├── config.py             # Env/.env configuration for LLM + Foundry IQ
+├── app.py                # Gradio demo UI
+├── main.py / train.py    # Training pipeline (transfer learning)
 ├── models/
-│   ├── resnet_model.py          # ResNet18 implementation with transfer learning
-│   └── saved/                   # Trained model checkpoints (.pth files)
-├── utils/
-│   ├── data_loader.py           # Dataset loading and splitting
-│   ├── transforms.py            # Data augmentation pipeline
-│   ├── metrics.py               # Evaluation metrics
-│   └── visualizer.py            # Plotting and visualization
-├── results/
-│   └── visualizations/          # Training curves, confusion matrix, predictions
-├── train.py                     # Training script
-├── main.py                      # Main pipeline orchestrator
-├── predict.py                   # Single image prediction
-├── requirements.txt             # Dependencies
-└── README.md                    # Project documentation
+│   ├── resnet_model.py   # ResNetClassifier
+│   └── saved/            # Trained checkpoint (resnet18_best.pth)
+├── utils/                # data_loader, transforms, metrics, visualizer
+├── knowledge_base/       # 27 cited agronomy docs (indexed by Foundry IQ)
+├── tools/
+│   ├── export_kb.py          # Export the agronomy KB to upload-ready files
+│   └── setup_foundry_iq.py   # Provision the Azure AI Search knowledge base
+├── website/              # Single-page marketing/demo site (HTML/CSS/JS)
+├── demo_images/          # Curated sample leaves for the demo
+├── DEMO_SCRIPT.md        # 60-second demo video script
+└── SUBMISSION.md         # Hackathon submission notes
 ```
 
-## 🌱 Supported Plant Diseases
+## 📊 Model performance
 
-The model classifies **38 disease classes** across **14 crop species**:
+| Metric | Value |
+|---|---|
+| Test accuracy | 95.02% |
+| Precision | 95.75% |
+| Recall | 95.02% |
+| F1-score | 95.01% |
+| Classes / crops | 38 / 14 |
 
-**Crops**: Apple, Blueberry, Cherry, Corn, Grape, Orange, Peach, Pepper, Potato, Raspberry, Soybean, Squash, Strawberry, Tomato
+## 🌱 Supported crops & diseases
 
-**Example Diseases**:
-- Apple: Scab, Black rot, Cedar apple rust
-- Tomato: Bacterial spot, Early blight, Late blight, Leaf mold, Septoria leaf spot, Spider mites, Target spot, Yellow leaf curl virus, Mosaic virus
-- Potato: Early blight, Late blight
-- Grape: Black rot, Esca, Leaf blight
-- And 23 more disease + healthy classes...
+**Crops:** Apple, Blueberry, Cherry, Corn, Grape, Orange, Peach, Pepper, Potato, Raspberry, Soybean, Squash, Strawberry, Tomato — **38 disease + healthy classes** total.
 
-## 🛠️ Technical Details
+## 🛠️ Technical notes
 
-### Model Architecture
-- **Base Model**: ResNet18 (pre-trained on ImageNet)
-- **Transfer Learning**: Fine-tuned final layer for 38-class classification
-- **Input Size**: 224x224 RGB images
-- **Total Parameters**: 11.2M (19K trainable when backbone frozen)
-
-### Data Augmentation
-- Random horizontal/vertical flips
-- Random rotation (±20°)
-- Color jitter (brightness, contrast, saturation, hue)
-- Random affine transformations
-- ImageNet normalization
-
-### Training Configuration
-- **Optimizer**: Adam (lr=0.001)
-- **Loss Function**: CrossEntropyLoss
-- **Scheduler**: ReduceLROnPlateau
-- **Batch Size**: 32
-- **Train/Val/Test Split**: 70/15/15
-
-## 📈 Results
-
-### Training Curves
-<p align="center">
-  <img src="https://i.imgur.com/TMZJV6n.png" alt="Training Curves" width="600"/>
-</p>
-
-### Confusion Matrix
-<p align="center">
-  <img src="https://i.imgur.com/cxdvq5c.png" alt="Confusion Matrix" width="600"/>
-</p>
-
-### Sample Predictions
-<p align="center">
-  <img src="https://i.imgur.com/IQ7osiN.png" alt="Sample Predictions" width="600"/>
-</p>
-
-(Check `results/visualizations/` for generated plots)
-
-## 🔧 Customization
-
-### Use Different Model Architecture
-```python
-# In main.py, change model parameter
-python main.py --model resnet34  # Options: resnet18, resnet34, resnet50
-```
-
-### Adjust Training Parameters
-```python
-python main.py --epochs 20 --batch_size 64 --freeze_backbone
-```
-
-### Add Custom Disease Classes
-1. Add new disease folders to `data/raw/`
-2. Model will automatically detect and train on new classes
-
-## 📝 Key Learnings
-
-- **Transfer learning** significantly reduces training time and data requirements
-- **Data augmentation** is critical for model generalization on agricultural images
-- **ResNet18** provides excellent balance between accuracy and computational efficiency
-- **Proper train/val/test splitting** prevents overfitting on time-series-like datasets
-- **Checkpointing** enables resuming training and deploying best models
-
-## 🎓 Skills Demonstrated
-
-- Deep learning with PyTorch
-- Transfer learning and fine-tuning
-- Computer vision for image classification
-- Custom data augmentation pipelines
-- Production ML workflows (training loops, checkpointing, evaluation)
-- Large-scale dataset handling (54K+ images)
-- Model performance analysis and visualization
-
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to:
-- Report bugs or issues
-- Suggest new features or improvements
-- Submit pull requests
-- Improve documentation
+- **Vision:** ResNet18 (ImageNet pre-trained), 224×224 RGB, FC head replaced for 38 classes, 70/15/15 split, Adam + ReduceLROnPlateau.
+- **Reasoning engine:** Azure AI Foundry / any OpenAI-compatible endpoint, with an offline knowledge-base composer as fallback.
+- **Grounding:** Foundry IQ knowledge base backed by Azure AI Search agentic retrieval (`minimal` reasoning effort = no extra LLM cost), with a curated cited KB as fallback.
+- **Platform:** `num_workers=0` throughout for Windows compatibility.
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+MIT License.
 
 ## 👤 Author
 
@@ -198,21 +143,6 @@ This project is licensed under the MIT License.
 
 ## 🙏 Acknowledgments
 
-- PlantVillage dataset provided by Penn State University
-- ResNet architecture from [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385)
-- Built as part of technical skill development for AI/ML engineering roles
-- Inspired by the need for accessible agricultural technology in developing regions
-
-## 🔮 Future Enhancements
-
-- [ ] Deploy as REST API with FastAPI
-- [ ] Build Gradio web interface for live predictions
-- [ ] Add explainability with Grad-CAM visualizations
-- [ ] Implement mobile app for field use
-- [ ] Expand to additional crop species
-- [ ] Add disease severity classification
-- [ ] Multi-language support for global accessibility
-
----
-
-⭐ **If you found this project helpful, please consider giving it a star!**
+- PlantVillage dataset (Penn State University).
+- Agronomy knowledge grounded in public extension sources (UC IPM, Cornell, PennState, CABI, FAO, APS).
+- Built for the **Microsoft Agents League @ AISF 2026** — Reasoning Agents track.
