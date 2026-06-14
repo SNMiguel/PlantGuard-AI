@@ -252,7 +252,93 @@
 
       output.innerHTML = html;
       output.scrollTop = 0;
+      saveScan(d);
+      renderHistory();
     }
+
+    /* ---- scan history (saved locally, powers the Scans tab) ---- */
+    var HKEY = "plantguard_scans";
+    function loadScans() {
+      try { return JSON.parse(localStorage.getItem(HKEY)) || []; } catch (e) { return []; }
+    }
+    function saveScan(d) {
+      var rec = {
+        ts: Date.now(),
+        species: d.species,
+        condition: d.condition,
+        severity: (d.severity || "moderate").toLowerCase(),
+        confidence: d.confidence,
+        healthy: !!d.is_healthy,
+        dollarsHigh: d.economics ? d.economics.dollars_high : 0,
+        headline: d.economics ? d.economics.headline : null
+      };
+      var arr = loadScans();
+      arr.unshift(rec);
+      arr = arr.slice(0, 50);
+      try { localStorage.setItem(HKEY, JSON.stringify(arr)); } catch (e) {}
+    }
+    function fmtDate(ts) {
+      var dt = new Date(ts);
+      return dt.toLocaleDateString(undefined, { month: "short", day: "numeric" }) + " " +
+             dt.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+    }
+    function renderHistory() {
+      var statsEl = document.getElementById("historyStats");
+      var listEl  = document.getElementById("historyList");
+      var countEl = document.getElementById("historyCount");
+      var clearEl = document.getElementById("historyClear");
+      if (!statsEl || !listEl) return;
+
+      var arr = loadScans();
+      var total = arr.length;
+      var diseased = arr.filter(function (r) { return !r.healthy; }).length;
+      var healthy = total - diseased;
+      var atRisk = arr.reduce(function (s, r) { return s + (r.dollarsHigh || 0); }, 0);
+
+      if (countEl) countEl.textContent = total
+        ? total + " scan" + (total > 1 ? "s" : "") + " saved on this device"
+        : "No scans yet.";
+      if (clearEl) clearEl.hidden = total === 0;
+
+      statsEl.innerHTML = [
+        ["Total scans", total],
+        ["Diseased", diseased],
+        ["Healthy", healthy],
+        ["Peak $ at risk", "$" + Math.round(atRisk).toLocaleString()]
+      ].map(function (s) {
+        return '<div class="hsum"><div class="hsum__num">' + s[1] +
+               '</div><div class="hsum__label">' + s[0] + "</div></div>";
+      }).join("");
+
+      if (!total) {
+        listEl.innerHTML = '<div class="history__empty"><span class="scan__ph-icon">🗂️</span>' +
+          '<p class="muted-small">Run a diagnosis in the Demo section above and it shows up here.</p></div>';
+        return;
+      }
+      listEl.innerHTML = arr.map(function (r) {
+        var sev = r.healthy ? "none" : (r.severity || "moderate");
+        var label = r.healthy ? "Healthy" : sev.toUpperCase();
+        var risk = r.headline
+          ? esc(r.headline.replace(" at risk if untreated", ""))
+          : '<span class="muted-small">no exposure</span>';
+        return '<div class="hrow">' +
+          '<div class="hrow__main"><div class="hrow__crop">' + esc(r.species) + "</div>" +
+          '<div class="hrow__cond muted-small">' + esc(r.condition) + "</div></div>" +
+          '<span class="badge badge--' + sev + '">' + esc(label) + "</span>" +
+          '<div class="hrow__conf">' + (r.confidence ? pct(r.confidence) + "%" : "") + "</div>" +
+          '<div class="hrow__risk">' + risk + "</div>" +
+          '<div class="hrow__date muted-small">' + fmtDate(r.ts) + "</div>" +
+        "</div>";
+      }).join("");
+    }
+    var clearBtn = document.getElementById("historyClear");
+    if (clearBtn) clearBtn.addEventListener("click", function () {
+      if (confirm("Clear all saved scans on this device?")) {
+        try { localStorage.removeItem(HKEY); } catch (e) {}
+        renderHistory();
+      }
+    });
+    renderHistory();
 
     // Only enable the scan UI when the diagnosis engine is reachable.
     function probe() {

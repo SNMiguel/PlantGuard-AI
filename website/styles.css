@@ -542,6 +542,43 @@ code{
 .scan__offline strong{ font-size:1.15rem; }
 .scan__offline.is-hidden{ display:none; }
 
+/* ============ SCAN HISTORY (Field Analytics) ============ */
+.history{ max-width:1040px; margin:0 auto; }
+.history__stats{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:22px;
+}
+.hsum{
+  border:1px solid var(--border); border-radius:14px;
+  background:rgba(255,255,255,0.03); padding:18px 20px;
+}
+.hsum__num{ font-size:1.8rem; font-weight:800; color:var(--mint); line-height:1; }
+.hsum__label{ margin-top:6px; font-size:.78rem; text-transform:uppercase; letter-spacing:.5px; color:var(--muted-2); }
+.history__bar{
+  display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px;
+}
+.btn--ghost-sm{
+  font-size:.78rem; font-weight:600; color:var(--muted);
+  padding:6px 13px; border-radius:999px; border:1px solid var(--border);
+  background:transparent; cursor:pointer; transition:.16s ease;
+}
+.btn--ghost-sm:hover{ color:#fff; border-color:rgba(239,68,68,0.5); background:rgba(239,68,68,0.12); }
+.history__list{ display:flex; flex-direction:column; gap:8px; }
+.hrow{
+  display:grid; grid-template-columns:1.6fr auto .7fr 1.4fr 1fr; align-items:center; gap:14px;
+  border:1px solid var(--border); border-radius:12px;
+  background:rgba(255,255,255,0.025); padding:12px 16px;
+}
+.hrow__crop{ font-weight:700; color:var(--ink); font-size:.98rem; }
+.hrow__cond{ margin-top:2px; }
+.hrow__conf{ font-size:.88rem; color:var(--muted); text-align:right; }
+.hrow__risk{ font-size:.86rem; color:var(--mint); }
+.hrow__date{ text-align:right; }
+.history__empty{
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:10px; text-align:center; padding:48px 24px;
+  border:1px dashed var(--border); border-radius:14px;
+}
+
 /* ============ CTA ============ */
 .cta{ padding:30px clamp(24px,5vw,72px) 100px; }
 .cta__inner{
@@ -612,6 +649,10 @@ code{
   .footer__top{ grid-template-columns:1fr; gap:34px; }
   .scan{ grid-template-columns:1fr; }
   .scan__input{ border-right:none; border-bottom:1px solid var(--border); }
+  .history__stats{ grid-template-columns:repeat(2,1fr); }
+  .hrow{ grid-template-columns:1fr auto; row-gap:6px; }
+  .hrow__conf, .hrow__risk, .hrow__date{ text-align:left; }
+  .hrow__conf{ grid-column:1; }
 }
 @media (max-width:820px){
   :root{ --rail:0px; }
