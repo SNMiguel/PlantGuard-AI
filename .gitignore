@@ -49,6 +49,7 @@ data/processed/*.jpeg
 # IDEs
 .vscode/
 .idea/
+.claude/
 *.swp
 *.swo
 *~

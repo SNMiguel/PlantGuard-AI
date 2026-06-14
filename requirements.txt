@@ -10,3 +10,6 @@ tqdm==4.66.1
 opencv-python==4.8.1.78
 gradio==4.7.1
 requests==2.32.5
+fastapi==0.128.0
+uvicorn==0.40.0
+python-multipart==0.0.22

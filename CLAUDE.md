@@ -36,13 +36,16 @@ python foundry.py                          # Foundry IQ grounding self-test (off
 python foundry.py --selftest-live          # ping the configured KB, dump raw response
 python agent.py                            # multi-step reasoning self-test
 
-# Run the Gradio demo app (upload a leaf -> diagnosis + agent reasoning)
-python app.py
+# Run the full web app (marketing site + native in-page scanning, one server)
+python api.py                              # → http://127.0.0.1:8000
+
+# Run the standalone Gradio demo app (alternative/fallback UI)
+python app.py                              # → http://127.0.0.1:7860
 ```
 
 Key CLI flags: `--save_dir` (default: `models/saved`), `--verbose`.
 
-On Windows the entry-point scripts (`predict.py`, `app.py`) force UTF-8 stdout because the existing modules print Unicode glyphs (e.g. `✓`) that the default `cp1252` console can't encode.
+On Windows the entry-point scripts (`predict.py`, `app.py`, `api.py`) force UTF-8 stdout because the existing modules print Unicode glyphs (e.g. `✓`) that the default `cp1252` console can't encode.
 
 ## Architecture
 
@@ -89,11 +92,12 @@ leaf image → PlantDoctor (predict.py) → ReasoningAgent (agent.py) → AgentR
 - `ReasoningAgent` (`agent.py`) — `run(label, confidence, top_k=..., ...)`. **Step 1 (differential diagnosis):** when given `top_k` for a diseased leaf, it issues a *separate Foundry IQ retrieval per candidate*, weighs distinguishing symptoms, and produces a verdict + "what to check" (LLM adjudication, heuristic fallback). **Step 2:** the 4-section action plan (diagnosis → severity → treatment → economic impact). The two steps run concurrently (`ThreadPoolExecutor`) to cut latency. Confidence modulates severity. `AgentReport.differential` holds the trace.
 - `FoundryIQ` (`foundry.py`) — the Microsoft IQ grounding layer. Live mode calls the **Azure AI Search agentic-retrieval `retrieve` action** (`POST /knowledgebases/{kb}/retrieve`); otherwise grounds against a curated, citation-backed agronomy KB (UC IPM, Cornell, PennState, CABI, FAO, APS). `--selftest-live` validates the live wiring.
 - `economics.py` — deterministic (non-LLM) `$ at risk` estimator from crop + severity + acreage; clearly labeled an estimate. Used by the app's economic-exposure card.
-- `app.py` — Gradio UI (`gradio==4.7.1`): upload a leaf + field size → diagnosis card, economic-exposure card, the differential panel, the 4 reasoning steps, and grounded sources.
+- `app.py` — Gradio UI (`gradio==4.7.1`): upload a leaf + field size → diagnosis card, economic-exposure card, the differential panel, the 4 reasoning steps, and grounded sources. Kept as a standalone/fallback UI.
+- `api.py` — FastAPI backend (the primary web entry point). Wraps the same pipeline (`predict` → `agent` → `economics`) behind `POST /api/diagnose` (returns JSON) and `GET /api/health`, and serves the `website/` static files, so the marketing site does its own in-page scanning with no Gradio iframe. Run `python api.py` → http://127.0.0.1:8000.
 - `config.py` — resolves LLM / Foundry IQ settings from env vars (or an optional `.env`; see `.env.example`). Nothing is required — absent credentials trigger the offline fallbacks.
 - `tools/export_kb.py` exports the agronomy KB to upload-ready Markdown; `tools/setup_foundry_iq.py` provisions the Azure AI Search index + knowledge base from a blob container.
 
-**Marketing site:** `website/` — single-page static site (`index.html` + `styles.css` + `script.js`, no build step). Forest-green palette; references `website/assets/images/{hero-banner,hero-background,ai-scan}.png`. Open `website/index.html` directly in a browser.
+**Web app / marketing site:** `website/` — single page (`index.html` + `styles.css` + `script.js`, no build step). Forest-green app shell with a sidebar; the "Demo" section has a native Scan panel that uploads a leaf to `POST /api/diagnose` and renders the diagnosis, economic-exposure, agent-reasoning, and grounded-sources cards in the site's own design. Serve it with `python api.py` (full functionality at http://127.0.0.1:8000). Opening `index.html` directly still works but shows a graceful "diagnosis engine isn't running" notice, since the `/api` calls have no server. References `website/assets/images/{hero-banner,hero-background,ai-scan}.png` and `website/assets/favicon.svg`.
 
 ## Platform note
 

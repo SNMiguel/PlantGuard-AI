@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PlantGuard-AI — Reasoning Agent for Plant Disease Diagnosis</title>
-  <meta name="description" content="PlantGuard-AI diagnoses 38 crop diseases from a single leaf photo and reasons through severity, treatment, and economic impact — grounded by Microsoft Foundry IQ." />
+  <title>PlantGuard AI</title>
+  <meta name="description" content="AI-powered plant disease detection for growers, farmers, and botanists. Diagnose 38 crop diseases from a single leaf photo, then reason through severity, treatment, and economic impact, all grounded by Microsoft Foundry IQ." />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -12,240 +13,337 @@
 </head>
 <body>
 
-  <!-- ===== NAV ===== -->
-  <header class="nav" id="nav">
-    <div class="nav__inner">
-      <a href="#hero" class="nav__brand">
-        <span class="nav__leaf">🌿</span> PlantGuard<span class="nav__ai">AI</span>
+  <!-- ============ APP SHELL ============ -->
+  <div class="shell">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+      <!-- decorative botanical line-art along the sidebar edge -->
+      <svg class="sidebar__vine" viewBox="0 0 60 600" fill="none" aria-hidden="true">
+        <path d="M30 0 C30 80 14 120 30 200 C46 280 14 320 30 400 C46 480 30 540 30 600"
+              stroke="#86efac" stroke-width="1" stroke-opacity="0.25"/>
+        <g stroke="#86efac" stroke-width="1" stroke-opacity="0.3" fill="none">
+          <path d="M30 110 C18 100 8 104 4 96 M30 110 C22 98 22 90 26 84"/>
+          <path d="M30 250 C42 240 52 244 56 236 M30 250 C38 238 38 230 34 224"/>
+          <path d="M30 390 C18 380 8 384 4 376 M30 390 C22 378 22 370 26 364"/>
+          <path d="M30 510 C42 500 52 504 56 496 M30 510 C38 498 38 490 34 484"/>
+        </g>
+      </svg>
+
+      <a href="#hero" class="brand">
+        <span class="brand__icon" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none">
+            <path d="M56,28c0,11.047-8.953,20-20,20H16V28c0-11.047,8.953-20,20-20h20V28z" fill="#86efac"/>
+            <path fill="#15803d" d="M36,0C20.535,0,8,12.535,8,28v22.344l-6.828,6.828c-1.562,1.562-1.562,4.094,0,5.656
+              C1.953,63.609,2.977,64,4,64s2.047-0.391,2.828-1.172L13.656,56H36c15.465,0,28-12.535,28-28V0H36z M56,28
+              c0,11.047-8.953,20-20,20H16V28c0-11.047,8.953-20,20-20h20V28z"/>
+            <path fill="#15803d" d="M32,20c0-2.211-1.789-4-4-4s-4,1.789-4,4v14.344l-2.828,2.828c-1.562,1.562-1.562,4.094,0,5.656
+              C21.953,43.609,22.977,44,24,44s2.047-0.391,2.828-1.172l2.824-2.824H44c2.211,0,4-1.789,4-4s-1.789-4-4-4h-6.348l13.176-13.176
+              c1.562-1.562,1.562-4.094,0-5.656s-4.094-1.562-5.656,0L32,26.344V20z"/>
+          </svg>
+        </span>
+        <span class="brand__name">Plant<br/>Guard AI</span>
       </a>
-      <nav class="nav__links">
-        <a href="#how">How it works</a>
-        <a href="#demo">Demo</a>
-        <a href="#features">Features</a>
-        <a href="#" class="nav__cta" id="navCta">Try the demo</a>
+
+      <nav class="snav" aria-label="Primary">
+        <a href="#hero" class="snav__item is-active">
+          <svg viewBox="0 0 24 24" class="snav__ico"><path d="M3 11l9-7 9 7v8a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>
+          Home
+        </a>
+        <a href="#features" class="snav__item">
+          <svg viewBox="0 0 24 24" class="snav__ico"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>
+          Features
+        </a>
+        <a href="#how" class="snav__item">
+          <svg viewBox="0 0 24 24" class="snav__ico"><circle cx="6" cy="6" r="2.2"/><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="12" r="2.2"/><path d="M8 6h5a3 3 0 0 1 3 3v1M8 18h5a3 3 0 0 0 3-3v-1"/></svg>
+          Workflow
+        </a>
+        <a href="#demo" class="snav__item">
+          <svg viewBox="0 0 24 24" class="snav__ico"><circle cx="12" cy="12" r="9"/><path d="M10 9l5 3-5 3z"/></svg>
+          Demo
+        </a>
+        <a href="#footer" class="snav__item">
+          <svg viewBox="0 0 24 24" class="snav__ico"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+          About
+        </a>
       </nav>
-      <button class="nav__burger" id="burger" aria-label="Menu">☰</button>
-    </div>
-  </header>
 
-  <!-- ===== HERO ===== -->
-  <section class="hero" id="hero">
-    <div class="hero__bg"></div>
-    <div class="hero__overlay"></div>
-    <div class="hero__inner">
-      <div class="hero__copy">
-        <span class="pill">Microsoft Agents League · Reasoning Agents</span>
-        <h1>Diagnose any crop disease<br />from a single leaf photo.</h1>
-        <p class="hero__sub">
-          PlantGuard-AI pairs a 95%-accurate vision model with a reasoning agent
-          that thinks through <strong>severity, treatment, and economic impact</strong> —
-          every answer grounded and cited by Microsoft Foundry IQ.
-        </p>
-        <div class="hero__actions">
-          <a href="#demo" class="btn btn--primary">See it in action</a>
-          <a href="#how" class="btn btn--ghost">How it works</a>
-        </div>
-        <div class="hero__stats">
-          <div class="stat"><span class="stat__num" data-count="95.02" data-suffix="%">0</span><span class="stat__label">Test accuracy</span></div>
-          <div class="stat"><span class="stat__num" data-count="38" data-suffix="">0</span><span class="stat__label">Disease classes</span></div>
-          <div class="stat"><span class="stat__num" data-count="14" data-suffix="">0</span><span class="stat__label">Crop species</span></div>
-        </div>
+      <div class="sidebar__foot">
+        <div class="sidebar__status"><span class="status-dot"></span> Model online · 95% acc</div>
       </div>
-      <div class="hero__art">
-        <img src="assets/images/hero-banner.png" alt="PlantGuard-AI scanning a crop leaf" class="hero__banner" />
-        <div class="hero__chip hero__chip--top">
-          <span class="dot dot--green"></span> Tomato · Late blight · 99.8%
-        </div>
-        <div class="hero__chip hero__chip--bottom">
-          🧠 Agent: severe — act immediately
-        </div>
-      </div>
-    </div>
-    <div class="hero__brands">
-      <span>Powered by</span> PyTorch · ResNet18 · Azure AI Foundry · Foundry IQ
-    </div>
-  </section>
+    </aside>
 
-  <!-- ===== HOW IT WORKS ===== -->
-  <section class="section" id="how">
-    <div class="section__head">
-      <span class="eyebrow">How it works</span>
-      <h2>From photo to action plan in seconds</h2>
-      <p>One image triggers a full pipeline: detect, reason, and ground the answer in trusted agronomy.</p>
-    </div>
+    <!-- mobile sidebar toggle -->
+    <button class="burger" id="burger" aria-label="Toggle navigation">☰</button>
 
-    <div class="how">
-      <div class="how__steps">
-        <div class="step">
-          <div class="step__num">1</div>
-          <div>
-            <h3>Snap &amp; upload a leaf</h3>
-            <p>A farmer photographs an affected leaf and uploads it — no app install, works on any phone browser.</p>
+    <!-- ===== MAIN ===== -->
+    <main class="main">
+
+      <!-- ===== HERO ===== -->
+      <section class="hero" id="hero">
+        <div class="hero__grid" aria-hidden="true"></div>
+        <div class="hero__leaves" aria-hidden="true">
+          <svg class="leaf-deco leaf-deco--1" viewBox="0 0 80 80"><path d="M40 72C40 36 40 18 72 8 68 44 60 62 40 72Z" stroke="#86efac" stroke-width="1.2" fill="none"/><path d="M40 72V18" stroke="#86efac" stroke-width="1.2"/></svg>
+          <svg class="leaf-deco leaf-deco--2" viewBox="0 0 80 80"><path d="M40 72C40 36 40 18 72 8 68 44 60 62 40 72Z" stroke="#86efac" stroke-width="1.2" fill="none"/><path d="M40 72V18" stroke="#86efac" stroke-width="1.2"/></svg>
+          <svg class="leaf-deco leaf-deco--3" viewBox="0 0 80 80"><path d="M40 72C40 36 40 18 72 8 68 44 60 62 40 72Z" stroke="#86efac" stroke-width="1.2" fill="none"/><path d="M40 72V18" stroke="#86efac" stroke-width="1.2"/></svg>
+          <svg class="leaf-deco leaf-deco--4" viewBox="0 0 80 80"><path d="M40 72C40 36 40 18 72 8 68 44 60 62 40 72Z" stroke="#4ade80" stroke-width="1.2" fill="none"/><path d="M40 72V18" stroke="#4ade80" stroke-width="1.2"/></svg>
+        </div>
+
+        <div class="hero__row">
+          <div class="hero__copy">
+            <span class="pill">AI Plant Pathology · Reasoning Agent</span>
+            <h1 class="hero__title">
+              Diagnose.<br/>
+              Understand.<br/>
+              <span class="accent">Act.</span>
+            </h1>
+            <p class="hero__sub">AI-powered plant disease detection for growers, farmers, and botanists.</p>
+            <div class="hero__cta">
+              <a href="#demo" class="btn btn--pill">Start Free Scan</a>
+              <a href="#how" class="btn btn--text">See how it works →</a>
+            </div>
+            <div class="hero__stats">
+              <div class="hstat"><span class="hstat__num" data-count="95.02" data-suffix="%">0</span><span class="hstat__lbl">Vision accuracy</span></div>
+              <div class="hstat"><span class="hstat__num" data-count="38" data-suffix="">0</span><span class="hstat__lbl">Disease classes</span></div>
+              <div class="hstat"><span class="hstat__num" data-count="14" data-suffix="">0</span><span class="hstat__lbl">Crop species</span></div>
+            </div>
+          </div>
+
+          <!-- Holographic leaf, pure CSS/SVG -->
+          <div class="holo" aria-hidden="true">
+            <div class="holo__grid"></div>
+            <div class="holo__glow"></div>
+            <div class="holo__hex">
+              <svg viewBox="0 0 300 320">
+                <polygon points="150,12 280,86 280,234 150,308 20,234 20,86"
+                         fill="none" stroke="#86efac" stroke-width="1" stroke-opacity="0.35"/>
+                <circle cx="150" cy="160" r="138" fill="none" stroke="#86efac" stroke-width="1" stroke-opacity="0.18"/>
+              </svg>
+            </div>
+            <div class="holo__leaf">
+              <svg viewBox="0 0 200 240">
+                <defs>
+                  <linearGradient id="leafGrad" x1="0.15" y1="0.05" x2="0.85" y2="0.95">
+                    <stop offset="0" stop-color="#dcfce7"/>
+                    <stop offset="0.4" stop-color="#86efac"/>
+                    <stop offset="0.72" stop-color="#4ade80"/>
+                    <stop offset="1" stop-color="#15803d"/>
+                  </linearGradient>
+                  <radialGradient id="leafSheen" cx="0.42" cy="0.32" r="0.7">
+                    <stop offset="0" stop-color="#ffffff" stop-opacity="0.6"/>
+                    <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+                  </radialGradient>
+                </defs>
+                <!-- full lanceolate leaf, symmetric, pointed both ends -->
+                <path d="M100 16 C152 54 168 132 100 226 C32 132 48 54 100 16 Z" fill="url(#leafGrad)"/>
+                <path d="M100 16 C152 54 168 132 100 226 C32 132 48 54 100 16 Z" fill="url(#leafSheen)"/>
+                <g stroke="#0a4023" stroke-opacity="0.4" fill="none" stroke-linecap="round">
+                  <!-- midrib -->
+                  <path d="M100 214 C99 150 99 80 100 28" stroke-width="2"/>
+                  <!-- right + left veins -->
+                  <g stroke-width="1.3">
+                    <path d="M100 64 C118 70 132 78 142 92"/>
+                    <path d="M100 100 C122 106 138 116 150 132"/>
+                    <path d="M100 138 C120 144 134 154 142 170"/>
+                    <path d="M100 174 C114 180 124 188 130 200"/>
+                    <path d="M100 64 C82 70 68 78 58 92"/>
+                    <path d="M100 100 C78 106 62 116 50 132"/>
+                    <path d="M100 138 C80 144 66 154 58 170"/>
+                    <path d="M100 174 C86 180 76 188 70 200"/>
+                  </g>
+                </g>
+              </svg>
+              <div class="holo__scan"></div>
+            </div>
+            <span class="holo__node holo__node--1"></span>
+            <span class="holo__node holo__node--2"></span>
+            <span class="holo__node holo__node--3"></span>
+            <div class="holo__readout">
+              <span class="dot dot--green"></span> ANALYZING · 99.8%
+            </div>
           </div>
         </div>
-        <div class="step">
-          <div class="step__num">2</div>
-          <div>
-            <h3>Vision model detects the disease</h3>
+      </section>
+
+      <!-- ===== FEATURE CARDS ===== -->
+      <section class="features-sec" id="features">
+        <div class="cards">
+          <article class="card reveal">
+            <div class="card__icon">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-3.5-3.5"/></svg>
+            </div>
+            <h3>Instant Diagnosis</h3>
+            <p>Snap a photo and get an AI diagnosis in under 5 seconds.</p>
+          </article>
+          <article class="card reveal">
+            <div class="card__icon">
+              <svg viewBox="0 0 24 24"><path d="M12 21c0-7 1-11 8-15-1 9-4 12-8 15Z"/><path d="M12 21c0-5-1-7-6-10"/></svg>
+            </div>
+            <h3>Treatment Plans</h3>
+            <p>Personalized care guides tailored to your crop and climate.</p>
+          </article>
+          <article class="card reveal">
+            <div class="card__icon">
+              <svg viewBox="0 0 24 24"><path d="M5 21V9m7 12V4m7 17v-8"/></svg>
+            </div>
+            <h3>Field Analytics</h3>
+            <p>Track outbreaks across your farm with live dashboards.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===== HOW IT WORKS ===== -->
+      <section class="section" id="how">
+        <div class="section__head">
+          <span class="eyebrow">How it works</span>
+          <h2>From photo to action plan in seconds</h2>
+          <p>One image triggers the full pipeline: detect the disease, reason about it, and ground every answer in trusted agronomy.</p>
+        </div>
+
+        <div class="steps">
+          <div class="steps__line" aria-hidden="true"></div>
+          <div class="step reveal">
+            <div class="step__num">1</div>
+            <h3>Snap &amp; upload a leaf</h3>
+            <p>A grower photographs an affected leaf and uploads it. No install needed, and it works in any phone browser.</p>
+          </div>
+          <div class="step reveal">
+            <div class="step__num">2</div>
+            <h3>Vision model detects</h3>
             <p>A ResNet18 transfer-learning model classifies the leaf across 38 disease classes with calibrated confidence.</p>
           </div>
-        </div>
-        <div class="step">
-          <div class="step__num">3</div>
-          <div>
-            <h3>Agent reasons &amp; grounds the answer</h3>
-            <p>The reasoning agent works through severity, treatment, and economic impact — citing Foundry IQ knowledge sources.</p>
+          <div class="step reveal">
+            <div class="step__num">3</div>
+            <h3>Agent reasons &amp; grounds</h3>
+            <p>The agent works through severity, treatment, and economic impact, citing Microsoft Foundry IQ sources.</p>
           </div>
         </div>
-      </div>
-      <div class="how__visual">
-        <img src="assets/images/ai-scan.png" alt="AI scanning and analyzing a leaf for disease" />
-        <div class="how__scanline"></div>
-      </div>
-    </div>
-  </section>
 
-  <!-- ===== DEMO ===== -->
-  <section class="section section--tint" id="demo">
-    <div class="section__head">
-      <span class="eyebrow">Live demo</span>
-      <h2>The reasoning agent in action</h2>
-      <p>Upload a leaf in the Gradio app and watch the agent build a grounded, multi-step diagnosis.</p>
-    </div>
-
-    <div class="demo">
-      <!-- Upload panel placeholder -->
-      <div class="demo__panel">
-        <div class="demo__placeholder" role="img" aria-label="Leaf upload preview">
-          <div class="demo__ph-inner">
-            <span class="demo__ph-icon">🍃</span>
-            <strong>Drop a crop leaf image</strong>
-            <span class="demo__ph-sub">JPG / PNG · single leaf, good light</span>
-          </div>
+        <div class="how__visual reveal">
+          <img src="assets/images/ai-scan.png" alt="AI scanning a leaf and analyzing it for disease" />
+          <div class="how__scanline"></div>
+          <div class="how__tag"><span class="status-dot"></span> Late blight · SEVERE · 99.8%</div>
         </div>
-        <button class="btn btn--primary btn--full" id="demoRun">🔍 Diagnose</button>
-      </div>
+      </section>
 
-      <!-- Agent output (real sample) -->
-      <div class="demo__output" id="demoOutput">
-        <div class="result-card">
-          <div class="result-card__top">
-            <div>
-              <span class="muted-label">Crop</span>
-              <div class="result-card__crop">Tomato</div>
+      <!-- ===== LIVE DEMO ===== -->
+      <section class="section section--tint" id="demo">
+        <div class="section__head">
+          <span class="eyebrow">Live demo</span>
+          <h2>Scan a leaf, get a grounded diagnosis</h2>
+          <p>Upload a crop leaf and the vision model plus reasoning agent run right here, returning a diagnosis, severity, treatment, economic exposure, and cited sources.</p>
+        </div>
+
+        <div class="scanwrap">
+          <div class="demo__bar">
+            <span class="demo__dots"><i></i><i></i><i></i></span>
+            <span class="demo__url">PlantGuard AI · Live scan</span>
+          </div>
+
+          <div class="scan" id="scan">
+            <!-- input -->
+            <form class="scan__input" id="scanForm">
+              <label class="dropzone" id="dropzone">
+                <input type="file" id="scanFile" accept="image/*" hidden />
+                <span class="dropzone__empty" id="dzEmpty">
+                  <span class="dropzone__icon">🍃</span>
+                  <strong>Drop a crop leaf image</strong>
+                  <span class="muted-small">or click to browse · JPG / PNG</span>
+                </span>
+                <img class="dropzone__preview" id="dzPreview" alt="Selected leaf" hidden />
+              </label>
+
+              <div class="scan__row">
+                <label class="field">
+                  <span class="field__label">Field size (acres)</span>
+                  <input type="number" id="scanAcres" value="10" min="0" step="1" />
+                </label>
+                <button type="submit" class="btn btn--pill btn--solid" id="scanBtn" disabled>🔍 Diagnose</button>
+              </div>
+              <p class="scan__hint muted-small">Runs on the local model served by <code>python api.py</code>.</p>
+            </form>
+
+            <!-- output -->
+            <div class="scan__output" id="scanOutput">
+              <div class="scan__placeholder" id="scanPlaceholder">
+                <span class="scan__ph-icon">🧠</span>
+                <p class="muted-small">Your diagnosis and the agent's reasoning will appear here.</p>
+              </div>
             </div>
-            <span class="badge badge--severe">Severity: SEVERE</span>
           </div>
-          <div class="result-card__status"><span class="status-dot"></span> Disease detected — <strong>Late blight</strong></div>
-          <div class="meter"><div class="meter__fill" style="width:99.8%"></div></div>
-          <div class="muted-small">Model confidence: <strong>99.79%</strong></div>
-        </div>
 
-        <div class="agent">
-          <div class="agent__head">
-            <h4>🧠 Agent reasoning</h4>
-            <span class="muted-small">grounded by Foundry IQ</span>
-          </div>
-          <div class="agent__step"><h5>🔬 Diagnosis</h5><p>Detected Late blight on Tomato with high confidence (99.8%). Likely cause: <em>Phytophthora infestans</em>, which produces fast-spreading water-soaked lesions.</p></div>
-          <div class="agent__step"><h5>📊 Severity</h5><p>SEVERE. Acts within days in cool, wet weather — immediate intervention required to avoid total crop loss.</p></div>
-          <div class="agent__step"><h5>💊 Treatment</h5><p>Destroy infected plants, apply protectant fungicide preventively, switch to systemic products when weather favors disease, avoid overhead irrigation.</p></div>
-          <div class="agent__step"><h5>📉 Economic impact</h5><p>One of the most destructive tomato diseases — an untreated outbreak can wipe out a field in under a week.</p></div>
-          <div class="agent__cites">
-            <span class="muted-label">Sources</span>
-            <a href="https://www.apsnet.org/edcenter/disandpath/" target="_blank">APS Plant Pathology</a>
-            <a href="https://www.vegetables.cornell.edu/" target="_blank">Cornell Plant Pathology</a>
+          <!-- shown when the diagnosis engine isn't reachable (e.g. static preview) -->
+          <div class="scan__offline is-hidden" id="scanOffline">
+            <span class="demo__ph-icon">🔌</span>
+            <strong>The diagnosis engine isn't running</strong>
+            <p class="muted-small">Start it locally, then reload this page:</p>
+            <code>python api.py</code>
+            <p class="muted-small">Serves the full app at <code>http://127.0.0.1:8000</code>.</p>
+            <button class="btn btn--pill" id="scanRetry">Retry connection</button>
           </div>
         </div>
-      </div>
-    </div>
-    <p class="demo__note">↑ Real output from the bundled <code>app.py</code>. Run <code>python app.py</code> to try your own images.</p>
-  </section>
+      </section>
 
-  <!-- ===== FEATURES ===== -->
-  <section class="section" id="features">
-    <div class="section__head">
-      <span class="eyebrow">Why PlantGuard</span>
-      <h2>A vision model and a reasoning agent, together</h2>
-      <p>Detection is only step one. PlantGuard reasons about what the diagnosis <em>means</em> for the farm.</p>
-    </div>
-
-    <div class="features">
-      <article class="feature">
-        <div class="feature__icon">🔬</div>
-        <h3>95% accurate vision model</h3>
-        <p>ResNet18 transfer learning over PlantVillage — 38 disease classes across 14 crop species.</p>
-      </article>
-      <article class="feature">
-        <div class="feature__icon">🧠</div>
-        <h3>Multi-step reasoning agent</h3>
-        <p>Chains diagnosis → severity → treatment → economic impact, the way an agronomist would.</p>
-      </article>
-      <article class="feature">
-        <div class="feature__icon">📚</div>
-        <h3>Grounded by Foundry IQ</h3>
-        <p>Microsoft Foundry IQ grounds every answer in authoritative agricultural knowledge with citations.</p>
-      </article>
-      <article class="feature">
-        <div class="feature__icon">⚡</div>
-        <h3>Confidence-aware</h3>
-        <p>Low-confidence calls are de-escalated and flagged for expert confirmation — no false alarms.</p>
-      </article>
-      <article class="feature">
-        <div class="feature__icon">🌍</div>
-        <h3>Built for the field</h3>
-        <p>Runs in any browser via Gradio, and stays fully demoable offline when connectivity drops.</p>
-      </article>
-      <article class="feature">
-        <div class="feature__icon">💸</div>
-        <h3>Economic context</h3>
-        <p>Every diagnosis includes the potential crop and economic impact, so farmers can prioritize action.</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- ===== CTA BANNER ===== -->
-  <section class="cta">
-    <div class="cta__inner">
-      <h2>Protect the harvest before disease spreads.</h2>
-      <p>Detect, reason, and act — all from a single leaf photo.</p>
-      <a href="#demo" class="btn btn--light">Launch the demo</a>
-    </div>
-  </section>
-
-  <!-- ===== FOOTER ===== -->
-  <footer class="footer">
-    <div class="footer__inner">
-      <div class="footer__brand">
-        <div class="nav__brand"><span class="nav__leaf">🌿</span> PlantGuard<span class="nav__ai">AI</span></div>
-        <p>AI-powered plant disease detection &amp; agronomic reasoning. Built for the Microsoft Agents League — Reasoning Agents track.</p>
-      </div>
-      <div class="footer__cols">
-        <div>
-          <h4>Product</h4>
-          <a href="#how">How it works</a>
-          <a href="#demo">Demo</a>
-          <a href="#features">Features</a>
+      <!-- ===== CTA ===== -->
+      <section class="cta">
+        <div class="cta__inner reveal">
+          <h2>Protect the harvest before disease spreads.</h2>
+          <p>Detect, reason, and act on a single leaf photo.</p>
+          <a href="#demo" class="btn btn--pill btn--lg">Start Free Scan</a>
         </div>
-        <div>
-          <h4>Stack</h4>
-          <a href="#">PyTorch · ResNet18</a>
-          <a href="#">Azure AI Foundry</a>
-          <a href="#">Foundry IQ grounding</a>
-        </div>
-        <div>
-          <h4>Stats</h4>
-          <a href="#">95.02% accuracy</a>
-          <a href="#">38 disease classes</a>
-          <a href="#">14 crop species</a>
-        </div>
-      </div>
-    </div>
-    <div class="footer__bar">
-      <span>© 2026 PlantGuard-AI</span>
-      <span>Microsoft Agents League · Reasoning Agents Track</span>
-    </div>
-  </footer>
+      </section>
 
+      <!-- ===== FOOTER ===== -->
+      <footer class="footer" id="footer">
+        <div class="footer__top">
+          <div class="footer__brand">
+            <a href="#hero" class="brand brand--row">
+              <span class="brand__icon" aria-hidden="true">
+                <svg viewBox="0 0 64 64" fill="none">
+                  <path d="M56,28c0,11.047-8.953,20-20,20H16V28c0-11.047,8.953-20,20-20h20V28z" fill="#86efac"/>
+                  <path fill="#15803d" d="M36,0C20.535,0,8,12.535,8,28v22.344l-6.828,6.828c-1.562,1.562-1.562,4.094,0,5.656
+                    C1.953,63.609,2.977,64,4,64s2.047-0.391,2.828-1.172L13.656,56H36c15.465,0,28-12.535,28-28V0H36z M56,28
+                    c0,11.047-8.953,20-20,20H16V28c0-11.047,8.953-20,20-20h20V28z"/>
+                  <path fill="#15803d" d="M32,20c0-2.211-1.789-4-4-4s-4,1.789-4,4v14.344l-2.828,2.828c-1.562,1.562-1.562,4.094,0,5.656
+                    C21.953,43.609,22.977,44,24,44s2.047-0.391,2.828-1.172l2.824-2.824H44c2.211,0,4-1.789,4-4s-1.789-4-4-4h-6.348l13.176-13.176
+                    c1.562-1.562,1.562-4.094,0-5.656s-4.094-1.562-5.656,0L32,26.344V20z"/>
+                </svg>
+              </span>
+              <span class="brand__name">PlantGuard AI</span>
+            </a>
+            <p>AI-powered plant disease detection and agronomic reasoning. Built for the Microsoft Agents League, Reasoning Agents track.</p>
+          </div>
+          <div class="footer__cols">
+            <div>
+              <h4>Product</h4>
+              <a href="#how">How it works</a>
+              <a href="#demo">Live demo</a>
+              <a href="#features">Features</a>
+            </div>
+            <div>
+              <h4>Stack</h4>
+              <a href="https://pytorch.org" target="_blank" rel="noopener">PyTorch · ResNet18</a>
+              <a href="https://azure.microsoft.com/products/ai-foundry" target="_blank" rel="noopener">Azure AI Foundry</a>
+              <a href="https://www.kaggle.com/datasets/abdallahalidev/plantvillage-dataset" target="_blank" rel="noopener">PlantVillage dataset</a>
+            </div>
+            <div>
+              <h4>Miguel</h4>
+              <a href="https://github.com/SNMiguel" target="_blank" rel="noopener">GitHub</a>
+              <a href="https://linkedin.com/in/migztech" target="_blank" rel="noopener">LinkedIn</a>
+              <a href="https://migztech.vercel.app" target="_blank" rel="noopener">Portfolio</a>
+            </div>
+          </div>
+        </div>
+        <div class="footer__bar">
+          <span>© 2026 PlantGuard AI · Miguel Shema Ngabonziza</span>
+          <span>Microsoft Agents League · Reasoning Agents Track</span>
+        </div>
+      </footer>
+
+    </main>
+  </div>
+
+  <div class="backdrop" id="backdrop"></div>
   <script src="script.js"></script>
 </body>
 </html>

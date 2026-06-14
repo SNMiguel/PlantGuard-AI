@@ -45,7 +45,7 @@ It degrades gracefully: with no cloud credentials it falls back to a curated, ci
  economics.py → "$X–$Y at risk if untreated"  (deterministic estimate)
      │
      ▼
- Gradio app (app.py)  /  marketing site (website/)
+ Web app (api.py + website/)  /  Gradio app (app.py)
 ```
 
 ## ✨ Key features
@@ -71,7 +71,10 @@ pip install -r requirements.txt
 # Single-image diagnosis (CLI)
 python predict.py demo_images/1_tomato_late_blight.jpg
 
-# Launch the full demo app (upload a leaf → diagnosis + agent reasoning)
+# Launch the full web app — marketing site + in-page leaf scanning (one server)
+python api.py            # → http://127.0.0.1:8000
+
+# Or the standalone Gradio demo (alternative UI)
 python app.py            # → http://127.0.0.1:7860
 ```
 
@@ -93,7 +96,8 @@ PlantGuard-AI/
 ├── foundry.py            # Microsoft Foundry IQ grounding (live + offline fallback)
 ├── economics.py          # Deterministic economic-exposure estimator
 ├── config.py             # Env/.env configuration for LLM + Foundry IQ
-├── app.py                # Gradio demo UI
+├── app.py                # Gradio demo UI (standalone/fallback)
+├── api.py                # FastAPI backend: /api/diagnose + serves website/
 ├── main.py / train.py    # Training pipeline (transfer learning)
 ├── models/
 │   ├── resnet_model.py   # ResNetClassifier
@@ -103,7 +107,7 @@ PlantGuard-AI/
 ├── tools/
 │   ├── export_kb.py          # Export the agronomy KB to upload-ready files
 │   └── setup_foundry_iq.py   # Provision the Azure AI Search knowledge base
-├── website/              # Single-page marketing/demo site (HTML/CSS/JS)
+├── website/              # Single-page web app + marketing site (served by api.py)
 ├── demo_images/          # Curated sample leaves for the demo
 ├── DEMO_SCRIPT.md        # 60-second demo video script
 └── SUBMISSION.md         # Hackathon submission notes
