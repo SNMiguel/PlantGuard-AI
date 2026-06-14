@@ -3,14 +3,14 @@ Economic exposure estimator for PlantGuard-AI.
 
 Turns a diagnosis (crop + severity) plus a field size into a concrete,
 deterministic "$ at risk if untreated" range. The numbers are transparent
-estimates — typical US gross revenue per acre multiplied by severity-based
-yield-loss ranges — NOT precise financial advice. We compute them in code
+estimates (typical US gross revenue per acre multiplied by severity-based
+yield-loss ranges), NOT precise financial advice. We compute them in code
 (not via the LLM) so the figures are reproducible and can't be hallucinated.
 
 Public API:
     from economics import estimate
     e = estimate("Tomato", "severe", acres=20)
-    print(e["headline"])   # "$160,000 – $256,000 at risk if untreated"
+    print(e["headline"])   # "$160,000 to $256,000 at risk if untreated"
 """
 
 # Rough US gross revenue per acre (USD). Ballpark, for relative scale only.
@@ -95,11 +95,11 @@ def estimate(crop, severity, acres):
         "yield_loss_high_pct": round(loss_hi * 100),
         "dollars_low": dollars_lo,
         "dollars_high": dollars_hi,
-        "headline": f"{_money(dollars_lo)} – {_money(dollars_hi)} at risk if untreated",
-        "subline": (f"~{round(loss_lo*100)}–{round(loss_hi*100)}% potential yield loss "
+        "headline": f"{_money(dollars_lo)} to {_money(dollars_hi)} at risk if untreated",
+        "subline": (f"~{round(loss_lo*100)}-{round(loss_hi*100)}% potential yield loss "
                     f"on {acres:g} acres of {crop} "
                     f"(≈{_money(total_value)} total crop value)"),
-        "disclaimer": ("Estimate only — typical US gross revenue/acre × severity-based "
+        "disclaimer": ("Estimate only: typical US gross revenue/acre × severity-based "
                        "loss range. Timely treatment can avoid most of this exposure."),
     }
 
