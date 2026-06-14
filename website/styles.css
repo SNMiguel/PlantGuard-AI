@@ -452,6 +452,9 @@ code{
   position:absolute; inset:6px; width:calc(100% - 12px); height:calc(100% - 12px);
   object-fit:cover; border-radius:10px;
 }
+/* author display rules override the `hidden` attribute, so re-hide these explicitly */
+.dropzone__preview[hidden]{ display:none; }
+.dropzone__empty[hidden]{ display:none; }
 
 .scan__row{ display:flex; gap:12px; align-items:flex-end; }
 .field{ display:flex; flex-direction:column; gap:6px; flex:1; }
