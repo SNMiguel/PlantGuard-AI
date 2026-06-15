@@ -10,6 +10,14 @@
 
 > **Microsoft Agents League — Reasoning Agents track.** Integrates **Microsoft Foundry IQ** (the required Microsoft IQ intelligence layer) for agentic, cited knowledge retrieval.
 
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=alXvoNP0Eg4">
+    <img src="https://img.youtube.com/vi/alXvoNP0Eg4/maxresdefault.jpg" alt="Watch the PlantGuard-AI demo" width="640" />
+  </a>
+  <br/>
+  <a href="https://www.youtube.com/watch?v=alXvoNP0Eg4"><b>▶ Watch the 3-minute demo</b></a>
+</p>
+
 ---
 
 ## 🎯 What it is

@@ -81,7 +81,7 @@ Plant disease costs farmers billions of dollars each year, and a diagnosis alone
 Clone the repo, install requirements, download the model checkpoint from the v1.0.0 Release into models/saved/, then run `python api.py` and open http://127.0.0.1:8000.
 
 - Code: https://github.com/SNMiguel/PlantGuard-AI
-- Demo video: (add link)
+- Demo video: https://www.youtube.com/watch?v=alXvoNP0Eg4
 ```
 
 ---
@@ -89,4 +89,4 @@ Clone the repo, install requirements, download the model checkpoint from the v1.
 ## After you click Save (fields that unlock)
 - **Code Repository:** `https://github.com/SNMiguel/PlantGuard-AI`
 - **Media:** upload a screenshot of the web app (the diagnosis result + agent reasoning) and/or the demo video
-- **Demo video link:** paste once recorded
+- **Demo video link:** https://www.youtube.com/watch?v=alXvoNP0Eg4

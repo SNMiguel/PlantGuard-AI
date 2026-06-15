@@ -48,7 +48,7 @@ PyTorch · ResNet18 (transfer learning) · FastAPI · Gradio · Azure AI Foundry
 - `knowledge_base/`: the 27 grounded agronomy docs indexed by Foundry IQ
 - `tools/`: KB export + Foundry IQ provisioning scripts
 
-## Links (fill in)
-- Demo video: ____
-- GitHub repo: ____
+## Links
+- Demo video: https://www.youtube.com/watch?v=alXvoNP0Eg4
+- GitHub repo: https://github.com/SNMiguel/PlantGuard-AI
 - Live demo (if hosted): ____
