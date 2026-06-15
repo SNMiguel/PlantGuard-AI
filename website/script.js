@@ -155,6 +155,14 @@
       if (e.dataTransfer.files[0]) setFile(e.dataTransfer.files[0]);
     });
 
+    // custom acres stepper buttons
+    [].forEach.call(document.querySelectorAll(".stepper__btn"), function (b) {
+      b.addEventListener("click", function () {
+        if (!acres.value) acres.value = "0";
+        if (b.getAttribute("data-step") === "up") acres.stepUp(); else acres.stepDown();
+      });
+    });
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       if (!selectedFile) return;
@@ -173,7 +181,8 @@
         })
         .then(render)
         .catch(function (err) {
-          output.innerHTML = '<div class="scan__placeholder"><span class="scan__ph-icon">⚠️</span>' +
+          output.innerHTML = '<div class="scan__placeholder"><span class="scan__ph-icon">' +
+            '<svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 20h20z"/><path d="M12 10v4"/><path d="M12 17h.01"/></svg></span>' +
             '<p class="muted-small">' + esc(err.message || "Something went wrong.") + "</p></div>";
         })
         .finally(function () { btn.disabled = false; });
@@ -206,7 +215,7 @@
         var e = d.economics;
         html +=
           '<div class="rcard econ">' +
-            '<div class="econ__label">💰 Estimated economic exposure</div>' +
+            '<div class="econ__label">Estimated economic exposure</div>' +
             '<div class="econ__head">' + esc(e.headline) + "</div>" +
             '<div class="econ__sub">' + esc(e.subline) + "</div>" +
             '<div class="econ__disc">' + esc(e.disclaimer) + "</div>" +
@@ -215,7 +224,7 @@
 
       html +=
         '<div class="rcard">' +
-          '<div class="agent__head"><h4>🧠 Agent reasoning</h4>' +
+          '<div class="agent__head"><h4>Agent reasoning</h4>' +
             '<span class="agent__tag">via ' + esc(a.engine) + "</span></div>" +
           (a.headline ? '<p class="agent__lead">' + esc(a.headline) + "</p>" : "");
 
@@ -225,15 +234,15 @@
           return '<div class="diff__cand"><span>' + esc(c.condition) + "</span><span>" + pct(c.confidence) + "%</span></div>";
         }).join("");
         html +=
-          '<div class="astep diff"><h5>🔎 Differential diagnosis ' +
+          '<div class="astep diff"><h5>Differential diagnosis ' +
             '<span class="agent__tag">· ' + esc(df.retrievals || 0) + " grounded retrievals</span></h5>" +
             '<div class="diff__cands">' + cands + "</div>" +
             '<div class="diff__verdict"><b>Verdict:</b> ' + esc(df.verdict) + ". " + esc(df.rationale) + "</div>" +
-            '<div class="diff__confirm">✔️ <b>To confirm:</b> ' + esc(df.confirm_checks) + "</div></div>";
+            '<div class="diff__confirm"><b>To confirm:</b> ' + esc(df.confirm_checks) + "</div></div>";
       }
 
       (a.steps || []).forEach(function (s) {
-        html += '<div class="astep"><h5>' + esc(s.icon) + " " + esc(s.title) + "</h5><p>" + esc(s.content) + "</p></div>";
+        html += '<div class="astep"><h5>' + esc(s.title) + "</h5><p>" + esc(s.content) + "</p></div>";
       });
       html += "</div>";
 
@@ -243,7 +252,7 @@
       }).join("");
       if (cites) {
         html +=
-          '<div class="rcard"><div class="agent__head"><h4>📚 Grounded sources</h4>' +
+          '<div class="rcard"><div class="agent__head"><h4>Grounded sources</h4>' +
             '<span class="agent__tag">' + esc(a.grounding) + "</span></div>" +
             '<ul class="cites">' + cites + "</ul>" +
             (d.disclaimer ? '<div class="rc__disc">' + esc(d.disclaimer) + "</div>" : "") +
@@ -311,7 +320,8 @@
       }).join("");
 
       if (!total) {
-        listEl.innerHTML = '<div class="history__empty"><span class="scan__ph-icon">🗂️</span>' +
+        listEl.innerHTML = '<div class="history__empty"><span class="scan__ph-icon">' +
+          '<svg viewBox="0 0 24 24" width="42" height="42" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l2-3h14l2 3"/><path d="M3 7h18v12H3z"/><path d="M3 12h5l2 3h4l2-3h5"/></svg></span>' +
           '<p class="muted-small">Run a diagnosis in the Demo section above and it shows up here.</p></div>';
         return;
       }

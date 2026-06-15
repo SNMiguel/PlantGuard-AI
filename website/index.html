@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=2" />
 </head>
 <body>
 
@@ -78,7 +78,7 @@
     </aside>
 
     <!-- mobile sidebar toggle -->
-    <button class="burger" id="burger" aria-label="Toggle navigation">☰</button>
+    <button class="burger" id="burger" aria-label="Toggle navigation"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 
     <!-- ===== MAIN ===== -->
     <main class="main">
@@ -104,7 +104,7 @@
             <p class="hero__sub">AI-powered plant disease detection for growers, farmers, and botanists.</p>
             <div class="hero__cta">
               <a href="#demo" class="btn btn--pill">Start Free Scan</a>
-              <a href="#how" class="btn btn--text">See how it works →</a>
+              <a href="#how" class="btn btn--text">See how it works</a>
             </div>
             <div class="hero__stats">
               <div class="hstat"><span class="hstat__num" data-count="95.02" data-suffix="%">0</span><span class="hstat__lbl">Vision accuracy</span></div>
@@ -250,7 +250,7 @@
               <label class="dropzone" id="dropzone">
                 <input type="file" id="scanFile" accept="image/*" hidden />
                 <span class="dropzone__empty" id="dzEmpty">
-                  <span class="dropzone__icon">🍃</span>
+                  <span class="dropzone__icon"><svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="#86efac" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2.5"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 15l-4.5-4.5L6 21"/></svg></span>
                   <strong>Drop a crop leaf image</strong>
                   <span class="muted-small">or click to browse · JPG / PNG</span>
                 </span>
@@ -260,9 +260,15 @@
               <div class="scan__row">
                 <label class="field">
                   <span class="field__label">Field size (acres)</span>
-                  <input type="number" id="scanAcres" value="10" min="0" step="1" />
+                  <div class="stepper">
+                    <input type="number" id="scanAcres" value="10" min="0" step="1" />
+                    <span class="stepper__btns">
+                      <button type="button" class="stepper__btn" data-step="up" aria-label="Increase acres" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button>
+                      <button type="button" class="stepper__btn" data-step="down" aria-label="Decrease acres" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+                    </span>
+                  </div>
                 </label>
-                <button type="submit" class="btn btn--pill btn--solid" id="scanBtn" disabled>🔍 Diagnose</button>
+                <button type="submit" class="btn btn--pill btn--solid" id="scanBtn" disabled><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="vertical-align:-3px;margin-right:7px"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.2-4.2"/></svg>Diagnose</button>
               </div>
               <p class="scan__hint muted-small">Runs on the local model served by <code>python api.py</code>.</p>
             </form>
@@ -270,7 +276,7 @@
             <!-- output -->
             <div class="scan__output" id="scanOutput">
               <div class="scan__placeholder" id="scanPlaceholder">
-                <span class="scan__ph-icon">🧠</span>
+                <span class="scan__ph-icon"><svg viewBox="0 0 24 24" width="42" height="42" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0-3.8 10.6c.5.4.8 1 .8 1.6v.8h6v-.8c0-.6.3-1.2.8-1.6A6 6 0 0 0 12 3z"/><path d="M9.5 20h5M10.5 22h3"/></svg></span>
                 <p class="muted-small">Your diagnosis and the agent's reasoning will appear here.</p>
               </div>
             </div>
@@ -278,7 +284,7 @@
 
           <!-- shown when the diagnosis engine isn't reachable (e.g. static preview) -->
           <div class="scan__offline is-hidden" id="scanOffline">
-            <span class="demo__ph-icon">🔌</span>
+            <span class="demo__ph-icon"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v5M15 2v5"/><path d="M6 7h12v4a6 6 0 0 1-12 0z"/><path d="M12 17v5"/></svg></span>
             <strong>The diagnosis engine isn't running</strong>
             <p class="muted-small">Start it locally, then reload this page:</p>
             <code>python api.py</code>
@@ -366,6 +372,6 @@
   </div>
 
   <div class="backdrop" id="backdrop"></div>
-  <script src="script.js"></script>
+  <script src="script.js?v=2"></script>
 </body>
 </html>
